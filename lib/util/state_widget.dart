@@ -46,9 +46,9 @@ class _StateWidgetState extends State<StateWidget> {
 
   Future<Null> initUser() async {
     //print('...initUser...');
-    FirebaseUser firebaseUserAuth = await Auth.getCurrentFirebaseUser();
-    User user = await Auth.getUserLocal();
-    Settings settings = await Auth.getSettingsLocal();
+    User firebaseUserAuth = await Auth.getCurrentFirebaseUser();
+    AppUser user = await Auth.getUserLocal();
+    AppSettings settings = await Auth.getSettingsLocal();
     setState(() {
       state.isLoading = false;
       state.firebaseUserAuth = firebaseUserAuth;
@@ -59,7 +59,7 @@ class _StateWidgetState extends State<StateWidget> {
 
   Future<void> logOutUser() async {
     await Auth.signOut();
-    FirebaseUser firebaseUserAuth = await Auth.getCurrentFirebaseUser();
+    User firebaseUserAuth = await Auth.getCurrentFirebaseUser();
     setState(() {
       state.user = null;
       state.settings = null;
@@ -69,9 +69,11 @@ class _StateWidgetState extends State<StateWidget> {
 
   Future<void> logInUser(email, password) async {
     String userId = await Auth.signIn(email, password);
-    User user = await Auth.getUserFirestore(userId);
+    print(userId);
+    AppUser user = await Auth.getUserFirestore(userId);
+    print(user.firstName);
     await Auth.storeUserLocal(user);
-    Settings settings = await Auth.getSettingsFirestore(userId);
+    AppSettings settings = await Auth.getSettingsFirestore(userId);
     await Auth.storeSettingsLocal(settings);
     await initUser();
   }

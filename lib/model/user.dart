@@ -5,30 +5,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //
 //     final user = userFromJson(jsonString);
 
-User userFromJson(String str) {
+AppUser userFromJson(String str) {
   final jsonData = json.decode(str);
-  return User.fromJson(jsonData);
+  return AppUser.fromJson(jsonData);
 }
 
-String userToJson(User data) {
+String userToJson(AppUser data) {
   final dyn = data.toJson();
   return json.encode(dyn);
 }
 
-class User {
+class AppUser {
   String userId;
   String firstName;
   String lastName;
   String email;
 
-  User({
+  AppUser({
     this.userId,
     this.firstName,
     this.lastName,
     this.email,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => new User(
+  factory AppUser.fromJson(Map<String, dynamic> json) => new AppUser(
     userId: json["userId"],
     firstName: json["firstName"],
     lastName: json["lastName"],
@@ -42,7 +42,7 @@ class User {
     "email": email,
   };
 
-  factory User.fromDocument(DocumentSnapshot doc) {
-    return User.fromJson(doc.data);
+  factory AppUser.fromDocument(DocumentSnapshot doc) {
+    return AppUser.fromJson(doc.data());
   }
 }
