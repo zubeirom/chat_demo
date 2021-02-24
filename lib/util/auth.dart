@@ -15,6 +15,11 @@ class Auth {
   static Future<String> signUp(String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      await userCredential.user.sendEmailVerification();
+    } catch(e) {
+      throw e;
+    }
     return userCredential.user.uid;
   }
 
@@ -58,7 +63,13 @@ class Auth {
   static Future<String> signIn(String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+    print(userCredential.user.emailVerified);
     return userCredential.user.uid;
+  }
+
+  static Future<void> resendVerificationEmail() async {
+    User user = FirebaseAuth.instance.currentUser;
+    user.sendEmailVerification();
   }
 
   static Future<AppUser> getUserFirestore(String userId) async {

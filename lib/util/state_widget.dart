@@ -67,6 +67,10 @@ class _StateWidgetState extends State<StateWidget> {
     });
   }
 
+  Future<void> resendEmail() async {
+    await Auth.resendVerificationEmail();
+  }
+
   Future<void> logInUser(email, password) async {
     String userId = await Auth.signIn(email, password);
     print(userId);
